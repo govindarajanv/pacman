@@ -1,0 +1,18 @@
+{
+  "name": "pacman",
+  "version": "1.0.0",
+  "description": "Classic Pac-Man arcade game rendered as a static site for GitHub Pages",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "pacman",
+    "arcade",
+    "canvas",
+    "github-pages",
+    "game"
+  ],
+  "author": "Govindarajan V",
+  "license": "MIT"
+}

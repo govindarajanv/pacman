@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PAC-MAN Arcade</title>
+    <meta name="description" content="Classic arcade Pac-Man game playable directly in your browser. Built for GitHub Pages.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23ffff00%22/><polygon points=%2250,50 95,20 95,80%22 fill=%22%23070714%22/></svg>">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="game-header">
+        <h1 class="game-title">PAC-MAN</h1>
+        <!-- Live version displayed below the page title (SemVer v1.0.0) -->
+        <div class="version-badge" id="appVersion">v1.0.0</div>
+    </header>
+
+    <!-- Arcade Cabinet Container -->
+    <main class="arcade-cabinet crt-active">
+        
+        <!-- Scoreboard HUD -->
+        <div class="scoreboard">
+            <div class="score-col">
+                <span class="score-label">1UP</span>
+                <span class="score-value" id="scoreValue">00</span>
+            </div>
+            <div class="score-col">
+                <span class="score-label">HIGH SCORE</span>
+                <span class="score-value" id="highScoreValue">00</span>
+            </div>
+            <div class="score-col">
+                <span class="score-label">LEVEL</span>
+                <span class="score-value" id="levelValue">1</span>
+            </div>
+        </div>
+
+        <!-- Canvas Game Screen -->
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+
+        <!-- Cabinet Action Controls -->
+        <div class="cabinet-controls">
+            <button id="pauseBtn" class="arcade-btn" aria-label="Pause or Resume Game">⏸ Pause</button>
+            <button id="muteBtn" class="arcade-btn" aria-label="Toggle Sound">🔊 Mute</button>
+            <button id="restartBtn" class="arcade-btn" aria-label="Restart Game">🔄 Restart</button>
+            <button id="crtBtn" class="arcade-btn" aria-label="Toggle CRT Scanlines">📺 CRT</button>
+            <button id="helpBtn" class="arcade-btn highlight" aria-label="How to Play">❓ Guide</button>
+        </div>
+
+        <!-- Mobile Touch Virtual D-Pad -->
+        <div class="mobile-controls">
+            <div class="dpad-grid">
+                <button class="dpad-btn up" id="dpadUp" aria-label="Move Up">▲</button>
+                <button class="dpad-btn left" id="dpadLeft" aria-label="Move Left">◀</button>
+                <div class="dpad-btn center"></div>
+                <button class="dpad-btn right" id="dpadRight" aria-label="Move Right">▶</button>
+                <button class="dpad-btn down" id="dpadDown" aria-label="Move Down">▼</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Information -->
+    <footer class="footer-info">
+        <p>Use <strong>Arrow Keys</strong> or <strong>WASD</strong> to navigate &bull; Swipe on mobile screens</p>
+        <p>Hosted on <strong>GitHub Pages</strong> &bull; Static Web Application</p>
+    </footer>
+
+    <!-- How to Play & Information Modal -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal-box">
+            <h2 class="modal-title">PAC-MAN GUIDE</h2>
+
+            <div class="modal-section">
+                <h3>CONTROLS</h3>
+                <ul class="key-list">
+                    <li><span class="key-badge">↑ / W</span></li>
+                    <li>Move Up</li>
+                    <li><span class="key-badge">↓ / S</span></li>
+                    <li>Move Down</li>
+                    <li><span class="key-badge">← / A</span></li>
+                    <li>Move Left</li>
+                    <li><span class="key-badge">→ / D</span></li>
+                    <li>Move Right</li>
+                    <li><span class="key-badge">Space / P</span></li>
+                    <li>Pause / Resume</li>
+                    <li><span class="key-badge">M</span></li>
+                    <li>Mute / Unmute Audio</li>
+                    <li><span class="key-badge">R</span></li>
+                    <li>Restart Game</li>
+                    <li><span class="key-badge">Swipe / D-Pad</span></li>
+                    <li>Mobile Controls</li>
+                </ul>
+            </div>
+
+            <div class="modal-section">
+                <h3>THE GHOSTS</h3>
+                <div class="ghost-guide">
+                    <div class="ghost-entry">
+                        <span class="ghost-color-dot" style="background:#ff0000;"></span>
+                        <strong>Blinky (Red):</strong> Relentless chaser targeting Pac-Man's tile directly.
+                    </div>
+                    <div class="ghost-entry">
+                        <span class="ghost-color-dot" style="background:#ffb8ff;"></span>
+                        <strong>Pinky (Pink):</strong> Strategic ambusher aiming 4 tiles ahead of Pac-Man.
+                    </div>
+                    <div class="ghost-entry">
+                        <span class="ghost-color-dot" style="background:#00ffff;"></span>
+                        <strong>Inky (Cyan):</strong> Flanker coordinating position with Blinky and Pac-Man.
+                    </div>
+                    <div class="ghost-entry">
+                        <span class="ghost-color-dot" style="background:#ffb852;"></span>
+                        <strong>Clyde (Orange):</strong> Wanders freely; approaches when far, flees when close.
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <h3>SCORING</h3>
+                <table class="scoring-table">
+                    <tr><td>Dot / Pellet</td><td>10 pts</td></tr>
+                    <tr><td>Power Pellet (Energizer)</td><td>50 pts</td></tr>
+                    <tr><td>1st Ghost</td><td>200 pts</td></tr>
+                    <tr><td>2nd Ghost</td><td>400 pts</td></tr>
+                    <tr><td>3rd Ghost</td><td>800 pts</td></tr>
+                    <tr><td>4th Ghost</td><td>1600 pts</td></tr>
+                    <tr><td>Cherry</td><td>100 pts</td></tr>
+                    <tr><td>Strawberry</td><td>300 pts</td></tr>
+                    <tr><td>Orange</td><td>500 pts</td></tr>
+                    <tr><td>Apple</td><td>700 pts</td></tr>
+                    <tr><td>Melon</td><td>1000 pts</td></tr>
+                    <tr><td>Galaxian Flagship</td><td>2000 pts</td></tr>
+                    <tr><td>Bell</td><td>3000 pts</td></tr>
+                    <tr><td>Key</td><td>5000 pts</td></tr>
+                    <tr><td>Extra Life</td><td>10,000 pts</td></tr>
+                </table>
+            </div>
+
+            <button class="modal-close-btn" id="closeHelpBtn">CLOSE GUIDE</button>
+        </div>
+    </div>
+
+    <!-- Modular Game Script -->
+    <script type="module" src="./js/game.js"></script>
+</body>
+</html>
